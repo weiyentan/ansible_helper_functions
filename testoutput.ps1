@@ -273,7 +273,7 @@ Function Parse-Args($arguments, $supports_check_mode = $false)
 			msg	    = "remote module does not support check mode"
 		}
 	}
-	Write-Output $params
+	write-output $params
 }
 
 #Alias Get-attr-->Get-AnsibleParam for backwards compat. Only add when needed to ease debugging of scripts
@@ -293,8 +293,11 @@ $ErrorActionPreference = 'Stop'
 #
 # The module is invoked with the path to the input args as the first argument,
 # we read the file at the path and convert the JSON to a hashtable
-$input_json = Get-Content -Path $args[0] -Raw
-$params = ConvertFrom-Json -InputObject $input_json -AsHashtable
+#$input_json = Get-Content -Path $args[0] -Raw
+#$params = ConvertFrom-Json -InputObject $input_json -AsHashtable
+$params = Parse-Args -arguments $args -supports_check_mode $true
+$check_mode = Get-AnsibleParam -obj $params -name "_ansible_check_mode" -type "bool" -default $false
+$diff_mode = Get-AnsibleParam -obj $params -name "_ansible_diff" -type "bool" -default $false
 
 # Define our return json, using $params.foo means we want the foo module option
 # from Ansible.
