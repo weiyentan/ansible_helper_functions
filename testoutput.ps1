@@ -273,7 +273,7 @@ Function Parse-Args($arguments, $supports_check_mode = $false)
 			msg	    = "remote module does not support check mode"
 		}
 	}
-	return $params
+	Write-Output $params
 }
 
 #Alias Get-attr-->Get-AnsibleParam for backwards compat. Only add when needed to ease debugging of scripts
